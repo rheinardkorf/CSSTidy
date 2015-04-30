@@ -17,14 +17,12 @@ if( ! class_exists( 'CSSTidy_Sanitize_WP' ) ) {
 			$csstidy->set_cfg( 'merge_selectors', FALSE );
 			$csstidy->set_cfg( 'remove_last_;', FALSE );
 			$csstidy->set_cfg( 'css_level', 'CSS3.0' );
-			$csstovalidateindiv = 'div {' . $css . '}';
+			$csstovalidateindiv = $css;
 			$csstovalidateindiv = preg_replace( '/\\\\([0-9a-fA-F]{4})/', '\\\\\\\\$1', $csstovalidateindiv );
 			$csstovalidateindiv = wp_kses_split( $csstovalidateindiv, array(), array() );
 			$csstidy->parse( $csstovalidateindiv );
 			$csstovalidateindiv = $csstidy->print->plain();
-			$csstovalidateindiv = str_replace( array( "\n", "\r", "\t" ), '', $csstovalidateindiv );
-			preg_match( "/^div\s*{(.*)}\s*$/", $csstovalidateindiv, $matches );
-			$cssvalidated = !empty( $matches[1] ) ? $matches[1] : false;
+			$cssvalidated = str_replace( array( "\n", "\r", "\t" ), '', $csstovalidateindiv );
 
 			return $cssvalidated;
 		}
